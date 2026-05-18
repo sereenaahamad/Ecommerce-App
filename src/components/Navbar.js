@@ -4,7 +4,7 @@ const Navbar = ({ cartCount, onCartToggle }) => {
       <div className="navbar__inner">
         <div className="navbar__brand">
           <p className="navbar__eyebrow text-rise text-rise--1">Curated everyday essentials</p>
-          <h1 className="navbar__title text-reveal ">Northstar Goods</h1>
+          <h1 className="navbar__title">Northstar Goods</h1>
         </div>
 
         <div className="navbar__meta">
