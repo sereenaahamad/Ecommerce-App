@@ -80,7 +80,7 @@ const Home = ({ cartItems, onAddToCart }) => {
           <div className="hero__eyebrow text-rise text-rise--1">
             Minimal picks. Maximum personality.
           </div>
-          <h1 className="hero__headline text-reveal text-reveal--1">
+          <h1 className="hero__headline text-rise text-rise--1">
             Shop thoughtful finds that feel elevated from the first click.
           </h1>
           <p className="text-rise text-rise--2">
