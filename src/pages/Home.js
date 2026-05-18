@@ -3,13 +3,14 @@ import ProductCard from "../components/ProductCard";
 import FilterBar from "../components/FilterBar";
 import { fallbackProducts } from "../data/fallbackProducts";
 
-const Home = () => {
+const Home = ({ cartItems, onAddToCart }) => {
   const [products, setProducts] = useState([]);
   const [status, setStatus] = useState("loading");
   const [isUsingFallback, setIsUsingFallback] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [sortOption, setSortOption] = useState("featured");
+  const normalizedSearchTerm = searchTerm.trim().toLowerCase();
 
   useEffect(() => {
     const loadProducts = async () => {
@@ -42,8 +43,8 @@ const Home = () => {
       const matchesCategory =
         selectedCategory === "all" || product.category === selectedCategory;
       const matchesSearch =
-        product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product.description.toLowerCase().includes(searchTerm.toLowerCase());
+        product.title.toLowerCase().includes(normalizedSearchTerm) ||
+        product.description.toLowerCase().includes(normalizedSearchTerm);
 
       return matchesCategory && matchesSearch;
     })
@@ -76,17 +77,21 @@ const Home = () => {
     <div className="section">
       <section className="hero">
         <div className="hero__content">
-          <div className="hero__eyebrow">Minimal picks. Maximum personality.</div>
-          <h1>Shop thoughtful finds that feel elevated from the first click.</h1>
-          <p>
+          <div className="hero__eyebrow text-rise text-rise--1">
+            Minimal picks. Maximum personality.
+          </div>
+          <h1 className="hero__headline text-reveal text-reveal--1">
+            Shop thoughtful finds that feel elevated from the first click.
+          </h1>
+          <p className="text-rise text-rise--2">
             Browse a cleaner catalog, discover standout essentials, and jump into
             product details with a much more polished shopping experience.
           </p>
 
-          <div className="hero__stats">
-            <div className="stat-chip">{products.length} curated products</div>
-            <div className="stat-chip">{categories.length} lifestyle categories</div>
-            <div className="stat-chip">Fast compare and search</div>
+          <div className="hero__stats text-rise text-rise--3">
+            <div className="stat-chip text-glow-hover">{products.length} curated products</div>
+            <div className="stat-chip text-glow-hover">{categories.length} lifestyle categories</div>
+            <div className="stat-chip text-glow-hover">Fast compare and search</div>
           </div>
         </div>
       </section>
@@ -110,25 +115,34 @@ const Home = () => {
       <section className="content-panel">
         <div className="section-header">
           <div>
-            <h2>Featured collection</h2>
-            <p>
+            <h2 className="text-rise text-rise--1">Featured collection</h2>
+            <p className="text-rise text-rise--2">
               {visibleProducts.length} item{visibleProducts.length === 1 ? "" : "s"}{" "}
               matching your current filters.
             </p>
           </div>
-          <p className="muted">Tap any card to open the product page.</p>
+          <p className="muted text-rise text-rise--3">Tap any card to open the product page.</p>
         </div>
 
         {visibleProducts.length > 0 ? (
-          <div className="grid">
-            {visibleProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+            <div className="grid">
+              {visibleProducts.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  cartItems={cartItems}
+                  onAddToCart={onAddToCart}
+                  product={product}
+                />
+              ))}
+            </div>
         ) : (
           <div className="empty-state">
-            <h3>No matches yet</h3>
-            <p>Try a broader search term or switch to another category.</p>
+            <h3>{normalizedSearchTerm ? "Product not found" : "No matches yet"}</h3>
+            <p>
+              {normalizedSearchTerm
+                ? `We couldn't find anything for "${searchTerm.trim()}".`
+                : "Try a broader search term or switch to another category."}
+            </p>
           </div>
         )}
       </section>

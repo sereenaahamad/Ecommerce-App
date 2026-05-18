@@ -1,13 +1,9 @@
 import { useNavigate } from "react-router-dom";
+import { currencyFormatter } from "../utils/currencyFormatter";
 
-const currencyFormatter = new Intl.NumberFormat("en-IN", {
-  style: "currency",
-  currency: "INR",
-  maximumFractionDigits: 0
-});
-
-const ProductCard = ({ product }) => {
+const ProductCard = ({ cartItems, onAddToCart, product }) => {
   const navigate = useNavigate();
+  const cartItem = cartItems.find((item) => item.id === product.id);
 
   return (
     <article
@@ -38,6 +34,17 @@ const ProductCard = ({ product }) => {
           {(product.rating?.rate ?? 4).toFixed(1)}
         </span>
       </div>
+
+      <button
+        className="button-primary card__button"
+        type="button"
+        onClick={(event) => {
+          event.stopPropagation();
+          onAddToCart(product);
+        }}
+      >
+        {cartItem ? `Add another (${cartItem.quantity} in cart)` : "Add to cart"}
+      </button>
     </article>
   );
 };

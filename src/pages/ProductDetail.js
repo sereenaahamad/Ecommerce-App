@@ -1,14 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { fallbackProducts } from "../data/fallbackProducts";
+import { currencyFormatter } from "../utils/currencyFormatter";
 
-const currencyFormatter = new Intl.NumberFormat("en-IN", {
-  style: "currency",
-  currency: "INR",
-  maximumFractionDigits: 0
-});
-
-const ProductDetail = () => {
+const ProductDetail = ({ cartItems, onAddToCart }) => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [status, setStatus] = useState("loading");
@@ -57,6 +52,8 @@ const ProductDetail = () => {
     );
   }
 
+  const cartItem = cartItems.find((item) => item.id === product.id);
+
   return (
     <section className="section">
       <Link className="back-link" to="/">
@@ -72,24 +69,30 @@ const ProductDetail = () => {
 
         <div className="detail-panel">
           <div className="detail-copy">
-            <div className="detail-badge">{product.category}</div>
-            <h1>{product.title}</h1>
+            <div className="detail-badge text-rise text-rise--1">{product.category}</div>
+            <h1 className="text-reveal text-reveal--1">{product.title}</h1>
 
-            <div className="detail-meta">
-              <span className="stat-chip">
+            <div className="detail-meta text-rise text-rise--2">
+              <span className="stat-chip text-glow-hover">
                 <span aria-hidden="true">*</span>
                 {(product.rating?.rate ?? 4).toFixed(1)} rating
               </span>
-              <span className="stat-chip">{product.rating?.count ?? 0} reviews</span>
-              <span className="stat-chip">Ready to ship</span>
+              <span className="stat-chip text-glow-hover">{product.rating?.count ?? 0} reviews</span>
+              <span className="stat-chip text-glow-hover">Ready to ship</span>
             </div>
 
-            <strong className="price">{currencyFormatter.format(product.price * 88)}</strong>
-            <p>{product.description}</p>
+            <strong className="price text-rise text-rise--3">
+              {currencyFormatter.format(product.price * 88)}
+            </strong>
+            <p className="text-rise text-rise--4">{product.description}</p>
 
             <div className="detail-actions">
-              <button className="button-primary" type="button">
-                Add to bag
+              <button
+                className="button-primary"
+                type="button"
+                onClick={() => onAddToCart(product)}
+              >
+                {cartItem ? `Add another (${cartItem.quantity} in cart)` : "Add to cart"}
               </button>
               <button className="button-secondary" type="button">
                 Save for later
