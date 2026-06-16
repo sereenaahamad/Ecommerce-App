@@ -3,7 +3,12 @@ import { Link, useParams } from "react-router-dom";
 import { fallbackProducts } from "../data/fallbackProducts";
 import { currencyFormatter } from "../utils/currencyFormatter";
 
-const ProductDetail = ({ cartItems, onAddToCart }) => {
+const ProductDetail = ({
+  cartItems,
+  onAddToCart,
+  savedItems = [],
+  onSaveForLater
+}) => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [status, setStatus] = useState("loading");
@@ -53,11 +58,12 @@ const ProductDetail = ({ cartItems, onAddToCart }) => {
   }
 
   const cartItem = cartItems.find((item) => item.id === product.id);
+  const savedItem = savedItems.find((item) => item.id === product.id);
 
   return (
     <section className="section">
       <Link className="back-link" to="/">
-        {"<-"} Back to collection
+        Back to collection
       </Link>
 
       <div className="detail">
@@ -94,8 +100,12 @@ const ProductDetail = ({ cartItems, onAddToCart }) => {
               >
                 {cartItem ? `Add another (${cartItem.quantity} in cart)` : "Add to cart"}
               </button>
-              <button className="button-secondary" type="button">
-                Save for later
+              <button
+                className="button-secondary"
+                type="button"
+                onClick={() => onSaveForLater(product)}
+              >
+                {savedItem ? "Saved for later" : "Save for later"}
               </button>
             </div>
           </div>
