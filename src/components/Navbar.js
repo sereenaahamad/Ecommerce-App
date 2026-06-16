@@ -3,8 +3,14 @@ const Navbar = ({ cartCount, onCartToggle }) => {
     <header className="navbar">
       <div className="navbar__inner">
         <div className="navbar__brand">
+          <img
+            className="navbar__mark"
+            src="/shopping.ico"
+            alt=""
+            aria-hidden="true"
+          />
           <p className="navbar__eyebrow text-rise text-rise--1">Curated everyday essentials</p>
-          <h1 className="navbar__title">Northstar Goods</h1>
+          <h1 className="navbar__title ">Northstar Goods</h1>
         </div>
 
         <div className="navbar__meta">
