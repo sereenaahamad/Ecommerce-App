@@ -6,25 +6,39 @@ import Navbar from "./components/Navbar";
 import CartDrawer from "./components/CartDrawer";
 import "./App.css";
 
+const readStoredList = (storageKey) => {
+  const savedValue = window.localStorage.getItem(storageKey);
+
+  if (!savedValue) {
+    return [];
+  }
+
+  try {
+    return JSON.parse(savedValue);
+  } catch (error) {
+    return [];
+  }
+};
+
 function App() {
   const [cartItems, setCartItems] = useState(() => {
-    const savedCart = window.localStorage.getItem("northstar-cart");
-
-    if (!savedCart) {
-      return [];
-    }
-
-    try {
-      return JSON.parse(savedCart);
-    } catch (error) {
-      return [];
-    }
+    return readStoredList("northstar-cart");
+  });
+  const [savedItems, setSavedItems] = useState(() => {
+    return readStoredList("northstar-saved-items");
   });
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   useEffect(() => {
     window.localStorage.setItem("northstar-cart", JSON.stringify(cartItems));
   }, [cartItems]);
+
+  useEffect(() => {
+    window.localStorage.setItem(
+      "northstar-saved-items",
+      JSON.stringify(savedItems)
+    );
+  }, [savedItems]);
 
   const handleAddToCart = (product) => {
     setCartItems((currentItems) => {
@@ -42,6 +56,33 @@ function App() {
     });
 
     setIsCartOpen(true);
+  };
+
+  const handleSaveForLater = (product) => {
+    setSavedItems((currentItems) => {
+      if (currentItems.some((item) => item.id === product.id)) {
+        return currentItems;
+      }
+
+      return [...currentItems, product];
+    });
+
+    setCartItems((currentItems) =>
+      currentItems.filter((item) => item.id !== product.id)
+    );
+  };
+
+  const handleMoveSavedToCart = (product) => {
+    setSavedItems((currentItems) =>
+      currentItems.filter((item) => item.id !== product.id)
+    );
+    handleAddToCart(product);
+  };
+
+  const handleRemoveSavedItem = (productId) => {
+    setSavedItems((currentItems) =>
+      currentItems.filter((item) => item.id !== productId)
+    );
   };
 
   const handleIncreaseQuantity = (productId) => {
@@ -86,6 +127,8 @@ function App() {
                 <ProductDetail
                   cartItems={cartItems}
                   onAddToCart={handleAddToCart}
+                  savedItems={savedItems}
+                  onSaveForLater={handleSaveForLater}
                 />
               }
             />
@@ -93,11 +136,14 @@ function App() {
         </main>
         <CartDrawer
           cartItems={cartItems}
+          savedItems={savedItems}
           isOpen={isCartOpen}
           onClose={() => setIsCartOpen(false)}
           onDecreaseQuantity={handleDecreaseQuantity}
           onIncreaseQuantity={handleIncreaseQuantity}
           onRemoveItem={handleRemoveItem}
+          onMoveSavedToCart={handleMoveSavedToCart}
+          onRemoveSavedItem={handleRemoveSavedItem}
         />
       </div>
     </BrowserRouter>
