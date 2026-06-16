@@ -6,11 +6,14 @@ const currencyFormatter = new Intl.NumberFormat("en-IN", {
 
 const CartDrawer = ({
   cartItems,
+  savedItems = [],
   isOpen,
   onClose,
   onDecreaseQuantity,
   onIncreaseQuantity,
-  onRemoveItem
+  onRemoveItem,
+  onMoveSavedToCart,
+  onRemoveSavedItem
 }) => {
   const subtotal = cartItems.reduce(
     (total, item) => total + item.quantity * item.price * 88,
@@ -101,6 +104,52 @@ const CartDrawer = ({
             <p>Add a few products to see them here and start building your order.</p>
           </div>
         )}
+
+        {savedItems.length > 0 ? (
+          <section className="saved-section">
+            <div className="saved-section__header">
+              <div>
+                <p className="navbar__eyebrow">Your list</p>
+                <h3 className="saved-section__title">Saved for later</h3>
+              </div>
+            </div>
+
+            <div className="saved-list">
+              {savedItems.map((item) => (
+                <article className="saved-item" key={item.id}>
+                  <div className="saved-item__media">
+                    <img src={item.image} alt={item.title} />
+                  </div>
+
+                  <div className="saved-item__content">
+                    <div>
+                      <p className="cart-item__category">{item.category}</p>
+                      <h4 className="saved-item__title">{item.title}</h4>
+                    </div>
+
+                    <div className="saved-item__actions">
+                      <strong>{currencyFormatter.format(item.price * 88)}</strong>
+                      <button
+                        className="button-secondary saved-item__button"
+                        type="button"
+                        onClick={() => onMoveSavedToCart(item)}
+                      >
+                        Move to cart
+                      </button>
+                      <button
+                        className="cart-item__remove"
+                        type="button"
+                        onClick={() => onRemoveSavedItem(item.id)}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+        ) : null}
       </aside>
     </>
   );
