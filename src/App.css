@@ -13,8 +13,8 @@
   top: 0;
   z-index: 20;
   backdrop-filter: blur(18px);
-  background: rgba(248, 244, 236, 0.82);
-  border-bottom: 1px solid rgba(38, 34, 30, 0.08);
+  background: rgba(243, 246, 255, 0.86);
+  border-bottom: 1px solid rgba(35, 16, 102, 0.08);
 }
 
 .navbar__inner {
@@ -232,6 +232,16 @@
   transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
 }
 
+.filter-bar__select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  text-align: center;
+  text-align-last: center;
+  background-image: none;
+  padding-right: 16px;
+}
+
 .filter-bar__search input:focus,
 .filter-bar__select:focus {
   border-color: rgba(29, 92, 99, 0.46);
@@ -266,6 +276,7 @@
   padding: 10px 14px;
   font: inherit;
   cursor: pointer;
+  text-align: center;
   transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease, background 180ms ease;
 }
 
@@ -904,7 +915,6 @@
   }
 
   .section-header,
-  .navbar__inner,
   .detail {
     grid-template-columns: 1fr;
     display: grid;
@@ -922,6 +932,10 @@
     display: none;
   }
 
+  .navbar__cart {
+    white-space: nowrap;
+  }
+
   .saved-item {
     grid-template-columns: 64px minmax(0, 1fr);
   }
@@ -930,28 +944,97 @@
 @media (max-width: 640px) {
   .app-main {
     width: min(100% - 20px, 1180px);
-    padding-top: 20px;
+    padding-top: 0;
   }
 
   .navbar__inner {
     width: min(100% - 20px, 1180px);
     padding: 16px 0;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .navbar__brand {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .navbar__meta {
+    flex: 0 0 auto;
+    justify-content: flex-end;
+    align-self: flex-start;
+    margin-left: auto;
   }
 
   .hero {
     border-radius: 24px;
-    padding: 24px;
+    padding: 0 24px 24px;
     margin-bottom: 50px;
+  }
+
+  .hero__content {
+    padding-top: 20px;
   }
 
   .hero h1 {
     font-size: 2.6rem;
   }
 
+  .hero p {
+    color: rgba(255, 250, 242, 0.97);
+  }
+
+  .hero__stats {
+    margin-top: 20px;
+  }
+
+  .stat-chip {
+    background: rgba(255, 250, 242, 0.18);
+    color: rgba(225, 239, 255, 0.96);
+    font-size: 0.86rem;
+    padding: 9px 12px;
+  }
+
   .filter-panel,
   .content-panel,
   .detail-panel {
     border-radius: 22px;
+  }
+
+  .filter-panel {
+    margin-top: -22px;
+    padding: 16px;
+  }
+
+  .filter-bar {
+    gap: 10px;
+  }
+
+  .filter-bar__search input,
+  .filter-bar__select {
+    padding: 11px 12px;
+    border-radius: 14px;
+    font-size: 0.92rem;
+  }
+
+  .filter-bar__search input {
+    padding-left: 38px;
+  }
+
+  .filter-bar__search span {
+    left: 12px;
+    font-size: 0.9rem;
+  }
+
+  .chip-button {
+    padding: 8px 11px;
+    font-size: 0.86rem;
+  }
+
+  .filter-bar__group {
+    gap: 8px;
+    margin-top: 12px;
   }
 
   .card {
